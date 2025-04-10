@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: novaoptionsbot
+    runtime: node
+    plan: standard
+    autoDeploy: true
+    buildCommand: bun install && bun run build
+    startCommand: bun start
+    buildFilter:
+      paths:
+        - *.json
+        - *.lockb
+        - src/*.ts
+        - src/*.js
+        - src/**/*.ts
+        - src/**/*.js
+        - src/**/*.md
+    envVars:
+      - fromGroup: novaoptionsbot

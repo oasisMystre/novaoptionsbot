@@ -1,0 +1,1 @@
+Once your trading account is set up, kindly message us at @squaredsupport to get you in the room immediately
