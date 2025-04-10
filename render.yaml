@@ -2,7 +2,7 @@ services:
   - type: web
     name: novaoptionsbot
     runtime: node
-    plan: standard
+    plan: starter
     autoDeploy: true
     buildCommand: bun install && bun run build
     startCommand: bun start
