@@ -8,8 +8,6 @@ services:
     startCommand: bun start
     buildFilter:
       paths:
-        - *.json
-        - *.lockb
         - src/*.ts
         - src/*.js
         - src/**/*.ts
