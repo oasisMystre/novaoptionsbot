@@ -1,7 +1,7 @@
-import { telegraf } from "instances";
 import { Input, Markup } from "telegraf";
 
 import { cleanText } from "./utils";
+import { telegraf } from "./instances";
 import { contactSupportButton } from "./constants";
 import { getScheduledMessages, updateScheduledMessages } from "./data";
 
