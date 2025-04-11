@@ -1,21 +1,18 @@
 import "dotenv/config";
-import admin from "firebase-admin";
-import { Telegraf } from "telegraf";
+import cron from "node-cron";
 import Fastify, { type FastifyRequest } from "fastify";
 
+import { run } from "./cronJob";
+import { telegraf } from "./instances";
 import { registerCommands } from "./commands";
-import { FIREBASE_SERVICE_ACCOUNT } from "./constants";
 
 async function main() {
-  admin.initializeApp({
-    credential: admin.credential.cert(JSON.parse(FIREBASE_SERVICE_ACCOUNT)),
-  });
   const server = Fastify({
     logger: true,
     ignoreDuplicateSlashes: true,
     ignoreTrailingSlash: true,
   });
-  const telegraf = new Telegraf(process.env.TELEGRAM_ACCESS_TOKEN!);
+
   registerCommands(telegraf);
 
   const tasks = [];
@@ -28,14 +25,14 @@ async function main() {
       "/telegraf/" + telegraf.secretPathComponent(),
       webhook as unknown as (request: FastifyRequest) => void
     );
-  } else tasks.push(telegraf.launch());
 
-  tasks.push(
-    server.listen({
-      host: process.env.HOST,
-      port: process.env.PORT ? Number(process.env.PORT!) : undefined,
-    })
-  );
+    tasks.push(
+      server.listen({
+        host: process.env.HOST,
+        port: process.env.PORT ? Number(process.env.PORT!) : undefined,
+      })
+    );
+  } else tasks.push(telegraf.launch());
 
   process.on("SIGINT", () => {
     telegraf.stop("SIGINT");
@@ -46,7 +43,10 @@ async function main() {
     return server.close();
   });
 
-  return await Promise.all(tasks);
+  Promise.all(tasks);
+  cron.schedule("*/1 * * * *", () =>
+    run().catch((error) => console.error("[FATILE ERROR]", error))
+  );
 }
 
 main();

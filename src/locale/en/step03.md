@@ -1,11 +1,7 @@
-Hi %name% 😊
-Just checking in to make sure everything's good and almost set up!
+Great job, %name%!
 
-I honestly can't wait to see you explore Squared AI and start making money with it.
-I get it...you might be a bit unsure about how to use the signals or how to fund your trading account. 
-That's totally fine, and we've got you covered!
+We've received your form, but we'll need you to stay in touch with our team to process everything smoothly.
 
-Once you're done, we'll know exactly what support you need..whether it's training, a setup guide, or a quick call from our team.
+To keep your request on track, please click the button below to text our support team. This ensures you get priority assistance, whether it's training, funding support, or full access to NOVA AI.
 
-Let me know once you've filled the form by clicking /done, %name%, so we can get you moving fast!😊
-This might just be the move that changes your money game. Let's do this! 🚀
+>DM our team now using the button below to keep things moving!
