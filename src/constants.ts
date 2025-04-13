@@ -3,6 +3,7 @@ import { Markup } from "telegraf";
 
 import { format } from "./utils";
 
+export const REFERRAL_LINK = process.env.REFERRAL_LINK!;
 export const SUPPORT_CHAT_ID = process.env.SUPPORT_CHAT_ID!;
 export const TELEGRAM_ACCESS_TOKEN = process.env.TELEGRAM_ACCESS_TOKEN!;
 export const FIREBASE_SERVICE_ACCOUNT = process.env.FIREBASE_SERVICE_ACCOUNT!;
