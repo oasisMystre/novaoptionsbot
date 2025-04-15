@@ -49,14 +49,18 @@ export const onStart = async (context: Context) => {
       ]);
     } else {
       const text = readFileSync("./src/locale/en/start.md");
-      await doc.ref.create({ started: false, done: false });
 
-      return context.replyWithMarkdownV2(text, {
-        link_preview_options: { is_disabled: true },
-        reply_markup: Markup.inlineKeyboard([
-          Markup.button.callback("⚡️ Start", "/start"),
-        ]).reply_markup,
-      });
+      return Promise.allSettled([
+        doc.exists
+          ? doc.ref.update({ started: false, done: false })
+          : doc.ref.create({ started: false, done: false }),
+        context.replyWithMarkdownV2(text, {
+          link_preview_options: { is_disabled: true },
+          reply_markup: Markup.inlineKeyboard([
+            Markup.button.callback("⚡️ Start", "/start"),
+          ]).reply_markup,
+        }),
+      ]);
     }
   }
 };
