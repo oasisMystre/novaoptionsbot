@@ -44,7 +44,7 @@ async function main() {
   });
 
   Promise.all(tasks);
-  cron.schedule("*/1 * * * *", () =>
+  cron.schedule("*/5 * * * *", () =>
     run().catch((error) => console.error("[FATILE ERROR]", error))
   );
 }

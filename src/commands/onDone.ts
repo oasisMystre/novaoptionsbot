@@ -39,7 +39,7 @@ export const onDone = async (context: Context) => {
               .replace("%name%", name)
               .replace("%referralLink%", REFERRAL_LINK),
           },
-          date: moment().add(1, "minute").toDate(),
+          date: moment().add(5, "minute").toDate(),
         }),
       ]);
     }
