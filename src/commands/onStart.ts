@@ -9,6 +9,7 @@ import {
   contactSupportButton,
   PINNED_TUTORIAL_MESSAGE_LINK,
   SUPPORT_CHAT_ID,
+  WEBSITE,
 } from "../constants";
 
 export const onStart = async (context: Context) => {
@@ -21,8 +22,6 @@ export const onStart = async (context: Context) => {
     const form = doc.data() as Form | undefined;
 
     if (form && !form.started) {
-      const text = readFileSync("./src/locale/en/step01.md");
-
       return Promise.allSettled([
         doc.ref.update({ started: true }),
         createScheduledMessage({
@@ -39,7 +38,11 @@ export const onStart = async (context: Context) => {
           },
         }),
         context.replyWithMarkdownV2(
-          format(text, PINNED_TUTORIAL_MESSAGE_LINK, SUPPORT_CHAT_ID),
+          format(
+            readFileSync("./src/locale/en/step01.md"),
+            PINNED_TUTORIAL_MESSAGE_LINK,
+            SUPPORT_CHAT_ID
+          ),
           {
             link_preview_options: { is_disabled: true },
             reply_markup: Markup.inlineKeyboard([contactSupportButton])
@@ -47,20 +50,20 @@ export const onStart = async (context: Context) => {
           }
         ),
       ]);
-    } else {
-      const text = readFileSync("./src/locale/en/start.md");
-
+    } else
       return Promise.allSettled([
         doc.exists
           ? doc.ref.update({ started: false, done: false })
           : doc.ref.create({ started: false, done: false }),
-        context.replyWithMarkdownV2(text, {
-          link_preview_options: { is_disabled: true },
-          reply_markup: Markup.inlineKeyboard([
-            Markup.button.callback("⚡️ Start", "/start"),
-          ]).reply_markup,
-        }),
+        context.replyWithMarkdownV2(
+          format(readFileSync("./src/locale/en/start.md"), WEBSITE),
+          {
+            link_preview_options: { is_disabled: true },
+            reply_markup: Markup.inlineKeyboard([
+              Markup.button.callback("⚡️ Start", "/start"),
+            ]).reply_markup,
+          }
+        ),
       ]);
-    }
   }
 };
