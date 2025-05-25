@@ -1,52 +1,58 @@
 import "dotenv/config";
 import cron from "node-cron";
-import Fastify, { type FastifyRequest } from "fastify";
+import { Telegraf } from "telegraf";
+import fastify, { FastifyRequest, type FastifyInstance } from "fastify";
 
-import { run } from "./cronJob";
-import { telegraf } from "./instances";
-import { registerCommands } from "./commands";
+import { getEnv } from "./env";
+import { db } from "./instances";
+import registerBot from "./bot";
+import { processScheduledMessages, checkJoined } from "./jobs";
 
-async function main() {
-  const server = Fastify({
-    logger: true,
-    ignoreDuplicateSlashes: true,
-    ignoreTrailingSlash: true,
-  });
+async function main(server: FastifyInstance, bot: Telegraf) {
+  registerBot(bot);
 
-  registerCommands(telegraf);
+  const promises = [];
 
-  const tasks = [];
-
+  bot.catch((error) => console.error(error));
   if ("RENDER_EXTERNAL_HOSTNAME" in process.env) {
-    const webhook = await telegraf.createWebhook({
+    const webhook = await bot.createWebhook({
       domain: process.env.RENDER_EXTERNAL_HOSTNAME!,
     });
     server.post(
-      "/telegraf/" + telegraf.secretPathComponent(),
+      "/telegraf/" + bot.secretPathComponent(),
       webhook as unknown as (request: FastifyRequest) => void
     );
-
-    tasks.push(
-      server.listen({
-        host: process.env.HOST,
-        port: process.env.PORT ? Number(process.env.PORT!) : undefined,
-      })
+  } else
+    promises.push(
+      bot.launch().then(() => console.log("bot running in background"))
     );
-  } else tasks.push(telegraf.launch());
 
-  process.on("SIGINT", () => {
-    telegraf.stop("SIGINT");
-    return server.close();
-  });
-  process.on("SIGTERM", () => {
-    telegraf.stop("SIGTERM");
-    return server.close();
-  });
-
-  Promise.all(tasks);
-  cron.schedule("*/5 * * * *", () =>
-    run().catch((error) => console.error("[FATILE ERROR]", error))
+  promises.push(
+    server.listen({
+      host: process.env.HOST ? process.env.HOST : "0.0.0.0",
+      port: process.env.PORT ? Number(process.env.PORT!) : 10004,
+    })
   );
+
+  process.once("SIGINT", () => bot.stop("SIGINT"));
+  process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
+  cron.schedule("*/2 * * * *", () => {
+    processScheduledMessages(db, bot).catch((error) => {
+      console.error(error);
+    });
+  });
+
+  cron.schedule("* * * * *", () => {
+    checkJoined(db, bot).catch((error) => {
+      console.error(error);
+    });
+  });
+
+  return Promise.all(promises);
 }
 
-main();
+const bot = new Telegraf(getEnv("TELEGRAM_ACCESS_TOKEN"));
+const server = fastify({ logger: true, ignoreTrailingSlash: true });
+
+main(server, bot);

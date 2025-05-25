@@ -1,1 +1,0 @@
-✅ Your request to join NOVAOPTIONS has been approved!

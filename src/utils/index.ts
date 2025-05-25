@@ -3,11 +3,12 @@ import { Context } from "telegraf";
 export * from "./format";
 
 export const protectedCommand =
-  <T extends (context: Context) => void>(
-    fn: T,
-    ...rooms: ("private" | "channel" | "group" | "supergroup")[]
+  <T extends Context, Fn extends (context: T) => void>(
+    fn: Fn,
+    rooms?: ("private" | "channel" | "group" | "supergroup")[]
   ) =>
-  (context: Context) => {
+  (context: T) => {
+    rooms = rooms || ["private"];
     if (context.chat && rooms.includes(context.chat.type)) return fn(context);
     return;
   };

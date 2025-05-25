@@ -1,11 +1,7 @@
 import { Telegraf } from "telegraf";
-import { credential } from "firebase-admin";
-import { initializeApp } from "firebase-admin/app";
 
-import { FIREBASE_SERVICE_ACCOUNT, TELEGRAM_ACCESS_TOKEN } from "./constants";
+import { getEnv } from "./env";
+import { createDB } from "./db";
 
-initializeApp({
-  credential: credential.cert(JSON.parse(FIREBASE_SERVICE_ACCOUNT)),
-});
-
-export const telegraf = new Telegraf(TELEGRAM_ACCESS_TOKEN);
+export const db = createDB(getEnv("DATABASE_URL"));
+export const telegraf = new Telegraf(getEnv("TELEGRAM_ACCESS_TOKEN"));
