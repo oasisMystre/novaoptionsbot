@@ -1,6 +1,6 @@
 *Welcome to NOVAOPTIONS\!*
 
-You\'re about to join thousands of traders making money\, with our AI-Powered Signals\, no experience needed\!
+You\'re about to join thousands of traders making money\, with our AI\-Powered Signals\, no experience needed\!
 
 To get started\, click or type \/start command\.
 
