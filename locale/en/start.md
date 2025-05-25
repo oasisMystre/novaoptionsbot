@@ -1,4 +1,4 @@
-*Welcome to NOVAOPTIONS!*
+*Welcome to NOVAOPTIONS\!*
 
 You\'re about to join thousands of traders making money\, with our AI-Powered Signals\, no experience needed\!
 
