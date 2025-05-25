@@ -21,13 +21,17 @@ export const startCommand = (bot: Telegraf) => {
           metadata: { ...context.user.form.metadata, done: false },
         }),
         createMessages(db, {
-          user: context.user.id,
-          schedule: moment().add(5, "minutes").toDate(),
-          text: readFileSync("locale/en/flows/flow-4.md", "utf-8")
-            .replace("%link%", getEnv("FORM_LINK"))
-            .replace("%name%", context.user.name),
-          buttons: [{ type: "callback", name: "Done", data: "done" }],
-        }),
+            buttons: [
+              { type: "callback", name: "✅ Yes", data: "gift" },
+              { type: "callback", name: "🔴 No", data: "restart" },
+            ],
+            user: context.user.id,
+            schedule: moment().add(24, "hours").toDate(),
+            text: readFileSync(
+              "locale/en/reminders/flow-1.md",
+              "utf-8"
+            ).replace("%name%", context.user.name),
+         }),
         context.replyWithMarkdownV2(
           readFileSync("locale/en/flows/flow-3.md", "utf-8")
             .replace("%name%", context.user.name)
