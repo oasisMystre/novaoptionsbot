@@ -56,9 +56,8 @@ export const startCommand = (bot: Telegraf) => {
           ),
           {
             link_preview_options: { is_disabled: true },
-            reply_markup: Markup.inlineKeyboard([
-              Markup.button.url("Contact Support", getEnv("SUPPORT_CHAT_URL")),
-            ]).reply_markup,
+            reply_markup: Markup.inlineKeyboard([contactSupportButton])
+              .reply_markup,
           }
         ),
       ]);
