@@ -32,7 +32,7 @@ export const restartAction = (telegraf: Telegraf) => {
           "%name%",
           context.user.name
         ),
-        schedule: moment().add(1, "minutes").toDate(),
+        schedule: moment().add(24, "hours").toDate(),
       }),
     ]);
   });

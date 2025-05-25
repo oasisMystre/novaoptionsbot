@@ -44,7 +44,7 @@ export const doneAction = (bot: Telegraf) => {
               { type: "callback", name: "🔴 No", data: "restart" },
             ],
             user: context.user.id,
-            schedule: moment().add(1, "minutes").toDate(),
+            schedule: moment().add(24, "hours").toDate(),
             text: readFileSync(
               "locale/en/reminders/flow-1.md",
               "utf-8"

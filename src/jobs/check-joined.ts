@@ -67,10 +67,6 @@ export const checkJoined = async (db: Database, bot: Telegraf) => {
           if (error instanceof TelegramError) {
             if (error.description.includes("USER_ALREADY_PARTICIPANT"))
               return onJoin(db, bot, user);
-            bot.telegram.sendMessage(
-              user.id,
-              getEnv<string>("CHANNEL_INVITE_LINK")
-            );
           }
         });
     })

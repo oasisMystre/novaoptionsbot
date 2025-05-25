@@ -22,7 +22,7 @@ export const startCommand = (bot: Telegraf) => {
         }),
         createMessages(db, {
           user: context.user.id,
-          schedule: moment().add(1, "minutes").toDate(),
+          schedule: moment().add(5, "minutes").toDate(),
           text: readFileSync("locale/en/flows/flow-4.md", "utf-8")
             .replace("%link%", getEnv("FORM_LINK"))
             .replace("%name%", context.user.name),
