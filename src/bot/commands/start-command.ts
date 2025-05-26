@@ -21,17 +21,17 @@ export const startCommand = (bot: Telegraf) => {
           metadata: { ...context.user.form.metadata, done: false },
         }),
         createMessages(db, {
-            buttons: [
-              { type: "callback", name: "✅ Yes", data: "gift" },
-              { type: "callback", name: "🔴 No", data: "restart" },
-            ],
-            user: context.user.id,
-            schedule: moment().add(24, "hours").toDate(),
-            text: readFileSync(
-              "locale/en/reminders/flow-1.md",
-              "utf-8"
-            ).replace("%name%", context.user.name),
-         }),
+          buttons: [
+            { type: "callback", name: "✅ Yes", data: "gift" },
+            { type: "callback", name: "🔴 No", data: "restart" },
+          ],
+          user: context.user.id,
+          schedule: moment().add(24, "hours").toDate(),
+          text: readFileSync("locale/en/reminders/flow-1.md", "utf-8").replace(
+            "%name%",
+            context.user.name
+          ),
+        }),
         context.replyWithMarkdownV2(
           readFileSync("locale/en/flows/flow-3.md", "utf-8")
             .replace("%name%", context.user.name)
@@ -56,8 +56,9 @@ export const startCommand = (bot: Telegraf) => {
           ),
           {
             link_preview_options: { is_disabled: true },
-            reply_markup: Markup.inlineKeyboard([contactSupportButton])
-              .reply_markup,
+            reply_markup: Markup.inlineKeyboard([
+              Markup.button.callback("⚡️ Start", "onstart"),
+            ]).reply_markup,
           }
         ),
       ]);
